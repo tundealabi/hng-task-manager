@@ -5,10 +5,8 @@ import {
   ForbiddenException,
   HttpCode,
   HttpStatus,
-  Logger,
   Post,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import { UserLoginDto, UserSignupDto } from '../dtos';
 import { LoginResponse } from '../entities';
@@ -20,11 +18,8 @@ import { AuthService } from '@/modules/auth/services';
 export class UserAuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly configService: ConfigService,
     private readonly userService: UserService,
   ) {}
-
-  private readonly logger = new Logger(UserAuthController.name);
 
   // -------------------------------------------------------
   // USER AUTH CREDENTIAL LOGIN
