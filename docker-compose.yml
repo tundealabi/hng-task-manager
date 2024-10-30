@@ -1,0 +1,23 @@
+services:
+  api:
+    container_name: task_mgt_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${PORT}:3000'
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+  db:
+    container_name: task_mgt_mongo
+    image: mongo:8.0
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
