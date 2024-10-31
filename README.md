@@ -51,6 +51,10 @@ yarn docker:up
 yarn start:dev
 ```
 
+## 📜 API Documentation
+
+<p>The swagger docs is located at http://localhost:{PORT}/docs</p>
+
 ## 💻 Built with
 
 Technologies used in the project:
