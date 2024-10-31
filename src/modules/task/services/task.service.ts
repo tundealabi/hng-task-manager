@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { TaskCreateDto } from '../dtos';
+import { GetTasksQueryDto, TaskCreateDto } from '../dtos';
 import { TaskModel } from '../repository/schemas';
 import { TaskRepository } from '../repository/task.repository';
 import { convertToMongoId } from '@/database/helpers';
@@ -41,6 +41,21 @@ export class TaskService {
 
   async getTask(taskId: string) {
     return this.taskRepository.findOne({ _id: taskId });
+  }
+
+  // -------------------------------------------------------
+  // GET TASKS
+  // -------------------------------------------------------
+
+  async getTasks({ cursor, limit, ...dto }: GetTasksQueryDto) {
+    return this.taskRepository.find(
+      {
+        _id: cursor ? { $gt: cursor } : undefined,
+        ...dto,
+      },
+      {},
+      { limit },
+    );
   }
 
   // -------------------------------------------------------

@@ -10,10 +10,11 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
-import { TaskCreateDto, TaskUpdateDto } from '../dtos';
+import { GetTasksQueryDto, TaskCreateDto, TaskUpdateDto } from '../dtos';
 import { TaskService } from '../services';
 import { controllerResponse } from '@/common/helpers';
 import { GetDataFromRequestUser } from '@/modules/auth/decorators';
@@ -58,7 +59,7 @@ export class TaskController {
   }
 
   // -------------------------------------------------------
-  // TASK FETCH
+  // GET TASK
   // -------------------------------------------------------
 
   @Get(':id')
@@ -69,6 +70,24 @@ export class TaskController {
     }
     return controllerResponse<any>({
       data: task,
+    });
+  }
+
+  // -------------------------------------------------------
+  // GET TASKS
+  // -------------------------------------------------------
+
+  @Get()
+  async getTasks(@Query() dto: GetTasksQueryDto) {
+    const tasks = await this.taskService.getTasks(dto);
+
+    return controllerResponse<any>({
+      data: tasks,
+      metadata: {
+        count: tasks.length,
+        cursor:
+          tasks.length < dto.limit ? null : tasks.at(-1)._id.toHexString(),
+      },
     });
   }
 

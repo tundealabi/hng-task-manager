@@ -26,13 +26,13 @@ export class TaskModel {
   @Prop({ required: true })
   dueDate: string;
 
-  @Prop({ enum: Object.values(TaskPriority) })
+  @Prop({ enum: Object.values(TaskPriority), index: true })
   priority?: TaskPriority;
 
-  @Prop({ enum: Object.values(TaskStatus), required: true })
+  @Prop({ enum: Object.values(TaskStatus), index: true, required: true })
   status: TaskStatus;
 
-  @Prop([String])
+  @Prop({ lowercase: true, type: [String] })
   tags?: string[];
 
   @Prop({ required: true })
@@ -40,3 +40,7 @@ export class TaskModel {
 }
 
 export const TaskSchema = SchemaFactory.createForClass(TaskModel);
+
+// Add compound indexes to optimize multi-field filtering queries. Watch your performance and update indexes as required
+TaskSchema.index({ status: 1, priority: 1 });
+TaskSchema.index({ status: 1, priority: 1, tags: 1 });

@@ -2,7 +2,6 @@ import {
   ArrayNotEmpty,
   ArrayUnique,
   IsArray,
-  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -11,6 +10,7 @@ import {
   MinLength,
 } from 'class-validator';
 
+import { IsValidDueDate } from '../decorators';
 import { TaskPriority, TaskStatus } from '../enums';
 
 export class TaskCreateDto {
@@ -22,7 +22,7 @@ export class TaskCreateDto {
   @MinLength(10)
   readonly description: string;
 
-  @IsDateString()
+  @IsValidDueDate()
   readonly dueDate: string;
 
   @IsOptional()
