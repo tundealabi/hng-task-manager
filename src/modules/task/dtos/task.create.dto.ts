@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   ArrayNotEmpty,
   ArrayUnique,
@@ -22,6 +23,9 @@ export class TaskCreateDto {
   @MinLength(10)
   readonly description: string;
 
+  @ApiProperty({
+    example: '2025-12-22',
+  })
   @IsValidDueDate()
   readonly dueDate: string;
 

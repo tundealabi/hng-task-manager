@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEnum, IsMongoId, IsNumber, IsOptional } from 'class-validator';
 
@@ -5,6 +6,10 @@ import { API_PAGE_LIMIT } from '@/common/constants';
 import { TaskPriority, TaskStatus } from '../enums';
 
 export class GetTasksQueryDto {
+  @ApiProperty({
+    example: 5,
+    type: 'integer',
+  })
   @IsOptional()
   @IsNumber()
   @Transform((p) => {

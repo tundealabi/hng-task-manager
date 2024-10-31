@@ -13,6 +13,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { GetTasksQueryDto, TaskCreateDto, TaskUpdateDto } from '../dtos';
 import { Task } from '../entities';
@@ -23,6 +24,7 @@ import { UserAuthJwtAuthGuard } from '@/modules/auth/guards';
 import { UserService } from '@/modules/user/services';
 
 @Controller()
+@ApiTags('Task')
 @UseGuards(UserAuthJwtAuthGuard)
 export class TaskController {
   constructor(

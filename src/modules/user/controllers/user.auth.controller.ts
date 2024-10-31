@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { UserLoginDto, UserSignupDto } from '../dtos';
 import { LoginResponse } from '../entities';
@@ -15,6 +16,7 @@ import { controllerResponse } from '@/common/helpers';
 import { AuthService } from '@/modules/auth/services';
 
 @Controller()
+@ApiTags('Auth')
 export class UserAuthController {
   constructor(
     private readonly authService: AuthService,

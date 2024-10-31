@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 import { AppModule } from '@/app/app.module';
@@ -50,12 +51,36 @@ async function bootstrap() {
     prefix: versioningPrefix,
   });
 
+  // documentation setup
+  const config = new DocumentBuilder()
+    .setTitle('Task Manager API Docs')
+    .setDescription('The task manager API documentation')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+      },
+      'Authorization',
+    )
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, documentFactory);
+
   await app.listen(port);
 
   logger.log(`==========================================================`);
 
   logger.log(
     `🚀 Http Server running on ${await app.getUrl()}${globalPrefix}/${versioningPrefix}${version}`,
+    'NestApplication',
+  );
+
+  logger.log(`==========================================================`);
+
+  logger.log(`==========================================================`);
+
+  logger.log(
+    `🚀 Application Docs is running on ${await app.getUrl()}/docs`,
     'NestApplication',
   );
 

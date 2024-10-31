@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
 
 import { REGEX_PASSWORD } from '@/common/constants';
@@ -8,6 +9,9 @@ export class UserSignupDto {
   @IsString()
   @IsNotEmpty()
   readonly username: string;
+  @ApiProperty({
+    example: 'abcd1234D!',
+  })
   @IsString()
   @Matches(REGEX_PASSWORD, {
     message:
