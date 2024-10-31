@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
 import { GetTasksQueryDto, TaskCreateDto } from '../dtos';
+import { Task } from '../entities';
 import { TaskModel } from '../repository/schemas';
 import { TaskRepository } from '../repository/task.repository';
 import { convertToMongoId } from '@/database/helpers';
 
 type CreateDto = TaskCreateDto & { createdBy: string };
+
+const populate = {
+  path: 'createdBy',
+  select: ['email', 'username', '-_id'],
+};
 
 @Injectable()
 export class TaskService {
@@ -40,7 +46,14 @@ export class TaskService {
   // -------------------------------------------------------
 
   async getTask(taskId: string) {
-    return this.taskRepository.findOne({ _id: taskId });
+    const result = await this.taskRepository.findOne(
+      { _id: taskId },
+      {},
+      {
+        populate,
+      },
+    );
+    return result.toObject<Task>();
   }
 
   // -------------------------------------------------------
@@ -48,14 +61,17 @@ export class TaskService {
   // -------------------------------------------------------
 
   async getTasks({ cursor, limit, ...dto }: GetTasksQueryDto) {
-    return this.taskRepository.find(
-      {
-        _id: cursor ? { $gt: cursor } : undefined,
-        ...dto,
-      },
+    const filters: { _id?: { $gt: string } } & typeof dto = { ...dto };
+    if (cursor) filters._id = { $gt: cursor };
+    const result = await this.taskRepository.find(
+      filters,
       {},
-      { limit },
+      {
+        limit,
+        populate,
+      },
     );
+    return result.map((item) => item.toObject<Task>());
   }
 
   // -------------------------------------------------------
@@ -67,12 +83,17 @@ export class TaskService {
     taskId: string,
     dto: Partial<CreateDto>,
   ) {
-    return this.taskRepository.findOneAndUpdate(
+    const result = await this.taskRepository.findOneAndUpdate(
       {
         _id: taskId,
         createdBy: userId,
       },
       { ...dto },
+      {},
+      {
+        populate,
+      },
     );
+    return result.toObject<Task>();
   }
 }

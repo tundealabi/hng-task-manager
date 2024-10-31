@@ -36,7 +36,7 @@ export class TaskCreateDto {
   @IsArray()
   @ArrayNotEmpty()
   @ArrayUnique()
-  @IsString({ each: true })
+  @IsString({ each: true, message: 'tags must be an array of strings' })
   @IsNotEmpty({ each: true })
   readonly tags?: string[];
 

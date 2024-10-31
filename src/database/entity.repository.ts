@@ -20,6 +20,7 @@ export abstract class EntityRepository<T extends Document> {
         entityFilterQuery,
         {
           __v: 0,
+          updatedAt: 0,
           ...projection,
         },
         {
@@ -36,7 +37,7 @@ export abstract class EntityRepository<T extends Document> {
   ): Promise<T[] | null> {
     return this.entityModel.find(
       entityFilterQuery,
-      { __v: 0, ...projection },
+      { __v: 0, updatedAt: 0, ...projection },
       {
         ...queryOptions,
       },
@@ -60,6 +61,7 @@ export abstract class EntityRepository<T extends Document> {
   async findOneAndUpdate(
     entityFilterQuery: FilterQuery<T>,
     updateEntityData: UpdateQuery<T>,
+    projection?: Record<string, unknown>,
     queryOptions?: QueryOptions,
   ): Promise<T | null> {
     return this.entityModel.findOneAndUpdate(
@@ -68,6 +70,7 @@ export abstract class EntityRepository<T extends Document> {
       {
         new: true,
         ...queryOptions,
+        projection: { __v: 0, updatedAt: 0, ...projection },
       },
     );
   }

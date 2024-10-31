@@ -15,6 +15,7 @@ import {
 } from '@nestjs/common';
 
 import { GetTasksQueryDto, TaskCreateDto, TaskUpdateDto } from '../dtos';
+import { Task } from '../entities';
 import { TaskService } from '../services';
 import { controllerResponse } from '@/common/helpers';
 import { GetDataFromRequestUser } from '@/modules/auth/decorators';
@@ -53,8 +54,9 @@ export class TaskController {
       createdBy: userId,
     });
 
-    return controllerResponse<any>({
-      data: newTask,
+    return controllerResponse<Pick<Task, '_id'>>({
+      data: { _id: newTask._id.toHexString() },
+      message: 'Task created successfully',
     });
   }
 
@@ -68,7 +70,7 @@ export class TaskController {
     if (!task) {
       throw new NotFoundException('Task does not exist');
     }
-    return controllerResponse<any>({
+    return controllerResponse<Task>({
       data: task,
     });
   }
@@ -80,13 +82,11 @@ export class TaskController {
   @Get()
   async getTasks(@Query() dto: GetTasksQueryDto) {
     const tasks = await this.taskService.getTasks(dto);
-
-    return controllerResponse<any>({
+    return controllerResponse<Task[]>({
       data: tasks,
       metadata: {
         count: tasks.length,
-        cursor:
-          tasks.length < dto.limit ? null : tasks.at(-1)._id.toHexString(),
+        cursor: tasks.length < dto.limit ? null : tasks.at(-1)._id,
       },
     });
   }
@@ -121,8 +121,9 @@ export class TaskController {
       throw new ForbiddenException('You cannot delete this task');
     }
 
-    return controllerResponse<any>({
+    return controllerResponse<Task>({
       data: updatedTask,
+      message: 'Task updated successfully',
     });
   }
 

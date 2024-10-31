@@ -1,8 +1,13 @@
-import { OmitType } from '@nestjs/swagger';
+import { TaskPriority, TaskStatus } from '../enums';
 
-import { TaskModel } from '../repository/schemas';
-import { UserModel } from '@/modules/user/repository/schemas';
-
-export class Task extends OmitType(TaskModel, ['createdBy']) {
-  createdBy?: Pick<UserModel, 'email' | 'username'>;
+export class Task {
+  _id: string;
+  assignedTo?: string;
+  createdBy: { email: string; username: string };
+  description: string;
+  dueDate: string;
+  priority?: TaskPriority;
+  status: TaskStatus;
+  tags?: string[];
+  title: string;
 }
