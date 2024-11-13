@@ -1,7 +1,9 @@
+import { ControllerResponseMetadata } from '../entities';
+
 export const controllerResponse = <T = null>(arg: {
   data: T;
   message?: string;
-  metadata?: unknown;
+  metadata?: ControllerResponseMetadata;
 }) => {
   return {
     data: arg.data,

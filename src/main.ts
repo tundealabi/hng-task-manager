@@ -10,6 +10,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 import { AppModule } from '@/app/app.module';
+import {
+  ControllerPaginatedResponse,
+  ControllerResponse,
+} from './common/entities';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -63,7 +67,10 @@ async function bootstrap() {
       'Authorization',
     )
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  const documentFactory = () =>
+    SwaggerModule.createDocument(app, config, {
+      extraModels: [ControllerResponse, ControllerPaginatedResponse],
+    });
   SwaggerModule.setup('docs', app, documentFactory);
 
   await app.listen(port);

@@ -8,6 +8,7 @@ import { TaskPriority, TaskStatus } from '../enums';
 export class GetTasksQueryDto {
   @ApiProperty({
     example: 5,
+    required: false,
     type: 'integer',
   })
   @IsOptional()

@@ -11,3 +11,7 @@ export class Task {
   tags?: string[];
   title: string;
 }
+
+export class CreatedTask {
+  _id: string;
+}
