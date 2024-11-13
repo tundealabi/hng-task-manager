@@ -59,7 +59,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         );
         response.status(status).json(exceptionResponseJson);
       } else {
-        exceptionResponseJson.message = message;
+        exceptionResponseJson.message = message || 'Please try again!';
         this.logger.error(
           {
             status,

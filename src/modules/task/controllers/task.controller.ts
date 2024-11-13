@@ -120,7 +120,7 @@ export class TaskController {
     );
 
     if (!updatedTask) {
-      throw new ForbiddenException('You cannot delete this task');
+      throw new ForbiddenException('You cannot update this task');
     }
 
     return controllerResponse<Task>({
