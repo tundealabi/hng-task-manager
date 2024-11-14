@@ -53,7 +53,7 @@ yarn start:dev
 
 ## 📜 API Documentation
 
-<p>The swagger docs is located at http://localhost:{PORT}/docs</p>
+<p>The swagger docs is located at https://hng-task-manager.onrender.com/docs</p>
 
 ## 💻 Built with
 
